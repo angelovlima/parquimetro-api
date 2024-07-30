@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="angelovlima">
+        <createTable tableName="condutores">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nome" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="endereco" type="VARCHAR(255)"/>
+            <column name="contato" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cpf" type="VARCHAR(14)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="forma_pagamento" type="VARCHAR(20)">
+            </column>
+        </createTable>
+
+        <createTable tableName="veiculos">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="placa" type="VARCHAR(10)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="modelo" type="VARCHAR(255)"/>
+            <column name="condutor_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="veiculos"
+                                 baseColumnNames="condutor_id"
+                                 constraintName="fk_veiculo_condutor"
+                                 referencedTableName="condutores"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="estacionamentos">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="inicio" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fim" type="TIMESTAMP"/>
+            <column name="tempo_fixo" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duracao" type="BIGINT"/>
+            <column name="veiculo_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="estacionamentos"
+                                 baseColumnNames="veiculo_id"
+                                 constraintName="fk_estacionamento_veiculo"
+                                 referencedTableName="veiculos"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="recibos">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="data_emissao" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="duracao" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tarifa" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valor_total" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="veiculo_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="recibos"
+                                 baseColumnNames="veiculo_id"
+                                 constraintName="fk_recibo_veiculo"
+                                 referencedTableName="veiculos"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="alertas">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="mensagem" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_hora" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="veiculo_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="condutor_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="alertas"
+                                 baseColumnNames="veiculo_id"
+                                 constraintName="fk_alerta_veiculo"
+                                 referencedTableName="veiculos"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="alertas"
+                                 baseColumnNames="condutor_id"
+                                 constraintName="fk_alerta_condutor"
+                                 referencedTableName="condutores"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
