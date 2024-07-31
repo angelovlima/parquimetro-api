@@ -82,11 +82,7 @@ public class EstacionamentoController {
     )
     @PostMapping("/{id}/encerrar")
     public ResponseEntity<EstacionamentoDTO> encerrarEstacionamento(@PathVariable Long id) {
-        try {
-            EstacionamentoDTO estacionamentoEncerrado = estacionamentoService.encerrarEstacionamento(id);
-            return new ResponseEntity<>(estacionamentoEncerrado, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        EstacionamentoDTO estacionamentoEncerrado = estacionamentoService.encerrarEstacionamento(id);
+        return new ResponseEntity<>(estacionamentoEncerrado, HttpStatus.OK);
     }
 }
